@@ -1,0 +1,1 @@
+export const Libro = ({libro}) => (<div>{libro}</div>); 
