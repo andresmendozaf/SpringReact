@@ -1,3 +1,3 @@
-export const Titulo = ({titulo}) => {
-    return <h1>{titulo}</h1>;
-}
+export const Titulo = ({titulo}) => (
+    <h1>{titulo}</h1>
+);

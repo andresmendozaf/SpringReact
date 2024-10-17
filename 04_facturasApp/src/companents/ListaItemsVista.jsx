@@ -14,19 +14,19 @@ export const ListaItemsVista = ({ titulo, items, handlerBorrarItem }) => {
                         <th>Producto</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
+                        <th>Subtotal</th>
                         <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                     {/*map es para la iteración del objeto*/}
                     {items.map(({ id, producto, precio, cantidad }) => (
-                        <FilaItemVista 
-                        key={id} 
-                        id={id} 
-                        producto={producto} 
-                        precio={precio} 
-                        cantidad={cantidad}
-                        handlerBorrarItem={ handlerBorrarItem }
+                        <FilaItemVista
+                            key={id}
+                            producto={producto}
+                            precio={precio}
+                            cantidad={cantidad}
+                            handlerBorrarItem={handlerBorrarItem}
                         />
                     ))}
                 </tbody>

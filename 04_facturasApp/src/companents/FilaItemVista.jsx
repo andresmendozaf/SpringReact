@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const FilaItemVista = ({id, producto, precio, cantidad, handlerBorrarItem}) => {
+    const subtotal = precio * cantidad;
 
     return (
         <>
@@ -9,6 +10,7 @@ export const FilaItemVista = ({id, producto, precio, cantidad, handlerBorrarItem
                 <td> {producto} </td>
                 <td> {precio} </td>
                 <td> {cantidad} </td>
+                <td> {subtotal} </td>
                 <td><button 
                 className='btn btn-danger'
                 onClick={() => handlerBorrarItem(id)}>eliminar</button></td>

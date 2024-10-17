@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const FormItemsVista = ( { handler }) => {
+export const FormItemsVista = ({ handler }) => {
 
     const [formItemsState, setformItemsState] = useState({
         producto: '',
@@ -53,35 +53,35 @@ export const FormItemsVista = ( { handler }) => {
     }
 
     return (<>
-     <form className="w-50" onSubmit={onFacturaItemsSubmit}>
-                            <input
-                                type="text"
-                                name="producto"
-                                value={producto}
-                                placeholder="Producto"
-                                className="form-control m-3"
-                                onChange={onCambioInput} />
-                            <input
-                                type="text"
-                                name="precio"
-                                value={precio}
-                                placeholder="Precio"
-                                className="form-control m-3"
-                                onChange={onCambioInput} />
-                            <input
-                                type="text"
-                                name="cantidad"
-                                value={cantidad}
-                                placeholder="Cantidad"
-                                className="form-control m-3"
-                                onChange={onCambioInput} />
-                            <button
-                                type="submit"
-                                className="btn btn-primary m-3">
-                                Nuevo item
-                            </button>
-                        </form>
+        <form className="w-50" onSubmit={onFacturaItemsSubmit}>
+            <input
+                type="text"
+                name="producto"
+                value={producto}
+                placeholder="Producto"
+                className="form-control m-3"
+                onChange={onCambioInput} />
+            <input
+                type="text"
+                name="precio"
+                value={precio}
+                placeholder="Precio"
+                className="form-control m-3"
+                onChange={onCambioInput} />
+            <input
+                type="text"
+                name="cantidad"
+                value={cantidad}
+                placeholder="Cantidad"
+                className="form-control m-3"
+                onChange={onCambioInput} />
+            <button
+                type="submit"
+                className="btn btn-primary m-3">
+                Nuevo item
+            </button>
+        </form>
     </>
-        
+
     )
 }

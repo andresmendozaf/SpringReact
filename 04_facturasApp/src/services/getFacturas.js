@@ -17,7 +17,7 @@ export const getFacturas = () =>{
 
 export const calculoTotal = (items = []) => {
     return items
-    .map(item => item.precio * item.cantidad)
+    .map(item => item.precio * item.cantidad) //currentValue
     .reduce(( accumulator, currentValue) => accumulator + currentValue, 0); 
 
 }

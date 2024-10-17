@@ -31,31 +31,6 @@ const facturaInicial = {
 
 export const FacturasApp = () => {
 
-    //no es buena práctica porque no se reutiliza el objeto con hooks
-    /**
-    const factura = getFacturas(); 
-
-    return(
-        <>
-        <h1>Ejemplo de factura </h1>
-        <ul>
-            <li>ID : {factura.id}</li>
-            <li>Nombre : {factura.nombre}</li>
-        </ul>
-
-        <h3>Datos del Cliente</h3>
-        <ul>
-        <li>Nombre : {factura.cliente.nombre}</li>
-        <li>Apellido : {factura.cliente.apellido}</li>
-        <li>País : {factura.cliente.direccion.pais}</li>
-        <li>Ciudad : {factura.cliente.direccion.ciudad}</li>
-        <li>Dirección : {factura.cliente.direccion.calle}</li>
-        <li>Número : {factura.cliente.direccion.numero}</li>
-        </ul>
-        </>
-    )
-    */
-
     const [formActivo, setFormActivo] = useState(false);
 
     const [total, setTotal] = useState(0);
@@ -66,7 +41,7 @@ export const FacturasApp = () => {
 
     const [items, setItems] = useState([]);
 
-    const {id, nombre, cliente, compania } = factura;
+    const { id, nombre, cliente, compania } = factura;
 
     useEffect(() => {
         const json = getFacturas();
@@ -79,8 +54,8 @@ export const FacturasApp = () => {
         setTotal(calculoTotal(items));
         console.log('el precio cambió!')
     }, [items]);
-    
-    const handlerAddItems = ({producto, precio, cantidad}) => {
+
+    const handlerAddItems = ({ producto, precio, cantidad }) => {
 
         setItems([...items, {
             id: contador,
@@ -93,40 +68,12 @@ export const FacturasApp = () => {
     }
 
     const handlerBorrarItem = (id) => {
-        setItems(items.filter( item => item.id !== id ))
+        setItems(items.filter(item => item.id !== id))
     }
 
     const onFormActivo = () => {
         setFormActivo(!formActivo);
     }
-
-
-
-    //Forma extendida para el useState
-    // const [productoValor, setProductoValor] = useState('');
-    // const [precioValor, setPrecioValor] = useState('');
-    // const [cantidadValor, setCantidadValor] = useState('');
-
-
-
-
-
-    // const cambioEnProducto = ({target}) => {
-    //     console.log(target.value);
-    //     setProductoValor(target.value);
-    // };
-
-    // const cambioEnPrecio = ({target}) => {
-    //     console.log(target.value);
-    //     setPrecioValor(target.value);
-    // };
-
-    // const cambioEnCantidad = ({target}) => {
-    //     console.log(target.value);
-    //     setCantidadValor(target.value);
-    // };
-
-    
 
     return (
         <>
@@ -145,13 +92,12 @@ export const FacturasApp = () => {
                                 <EmpresasVista titulo="Datos de la Empresa" compania={compania} />
                             </div>
                         </div>
-                        <ListaItemsVista titulo="Productos de la factura" items={items} handlerBorrarItem={ handlerBorrarItem }/>
+                        <ListaItemsVista titulo="Productos de la factura" items={items} handlerBorrarItem={handlerBorrarItem} />
                         <TotalVista total={total} />
                         <button className="btn btn-secondary"
-                        onClick={ onFormActivo }>{!formActivo? 'Agregar Item': 'Ocultar Formulario'} </button>
-                        { !formActivo || <FormItemsVista handler = { handlerAddItems}/>}
-                        
-                       
+                            onClick={onFormActivo}>{!formActivo ? 'Agregar Item' : 'Ocultar Formulario'} </button>
+                        {!formActivo || <FormItemsVista handler={handlerAddItems} />}
+
                     </div>
                 </div>
             </div>

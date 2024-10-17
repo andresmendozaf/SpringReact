@@ -11,7 +11,7 @@ export const ContadorApp = ({valor}) => {
   
   return <>
     <h2>El valor del Contador es {contador} </h2>
-    <button onClick={contadorSuma}>incrementar contador + 2 </button>
+    <button onClick={contadorSuma}>Incrementar contador + 2 </button>
 
   </>
 }

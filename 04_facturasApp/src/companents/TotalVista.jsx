@@ -6,7 +6,6 @@ export const TotalVista = ({total}) => {
                 <span className="badge bg-success"> {total} </span>
             </div>
 
-
         </>
     )
 }
