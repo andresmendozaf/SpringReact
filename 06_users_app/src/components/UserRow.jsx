@@ -13,7 +13,6 @@ export const UserRow = ({ handlerRemoveUser, handlerUserSelectedForm, id, userna
                         id,
                         username,
                         email,
-                        password
                     }
                     )}
                 >
