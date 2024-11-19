@@ -1,36 +1,23 @@
-import { UserForm } from "./components/UserForm";
-import { UsersList } from "./components/UsersList";
-import { useUsers } from "./hooks/useUsers";
+import { LoginPage } from "./auth/pages/LoginPage";
+import { UsersPage } from "./pages/UsersPage";
+import { Navbar } from "./components/layout/Navbar";
+import { useAuth } from "./auth/hooks/useAuth";
 
 export const UsersApp = () => {
 
-    const {
-        users,
-        userSelected,
-        initialUserForm,
-        handlerAddUser,
-        handlerUserSelectedForm,
-        handlerRemoveUser,
-    } = useUsers();
-   
+    const { login, handlerLogin, handlerLogout } = useAuth();
     return (
-        <div className="container my-4">
-            <h2>Users App</h2>
-            <div className="row">
-                <div className="col">
-                    <UserForm
-                        initialUserForm={initialUserForm}
-                        handlerAddUser={handlerAddUser} 
-                        userSelected={userSelected}/>
-                </div>
-                <div className="col">
-                    {users.length === 0
-                        ? <div className="alert alert-warning">No hay usuarios en el sistema!</div>
-                        : <UsersList
-                            handlerUserSelectedForm={handlerUserSelectedForm}
-                            handlerRemoveUser={handlerRemoveUser}
-                            users={users} />}
-                </div>
-            </div>
-        </div>);
+        <>
+            {
+                login.isAuth ?
+                    (
+                        <>
+                            <Navbar login={ login } handlerLogout={handlerLogout}/>
+                            <UsersPage />
+                        </>
+                    )
+                    : <LoginPage handlerLogin={handlerLogin} />
+            }
+        </>
+    );
 }

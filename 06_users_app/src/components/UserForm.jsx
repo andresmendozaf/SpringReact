@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-export const UserForm = ({ handlerAddUser, userSelected, initialUserForm }) => {
+export const UserForm = ({ handlerAddUser, userSelected, initialUserForm, handlerCloseForm }) => {
 
     const [userForm, setUserForm] = useState(initialUserForm);
 
@@ -29,12 +29,17 @@ export const UserForm = ({ handlerAddUser, userSelected, initialUserForm }) => {
                 title: "Error de validación",
                 text: "Debe completar los campos del formulario!!!",
                 icon: "error"
-              });
+            });
             return;
         }
         //console.log(userForm);
 
         handlerAddUser(userForm);
+        setUserForm(initialUserForm);
+    }
+
+    const onCloseForm = () => {
+        handlerCloseForm(),
         setUserForm(initialUserForm);
     }
     return (
@@ -63,6 +68,12 @@ export const UserForm = ({ handlerAddUser, userSelected, initialUserForm }) => {
                 className="btn btn-primary"
                 type="submit">
                 {id > 0 ? 'Editar' : 'Crear'}
+            </button>
+            <button
+                className="btn btn-primary mx-2"
+                type="button"
+                onClick={() => onCloseForm()}>
+                Cerrar
             </button>
         </form>
     );
