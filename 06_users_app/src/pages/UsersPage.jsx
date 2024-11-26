@@ -1,29 +1,19 @@
+import { useContext } from "react";
 import { UserModalForm } from "../components/UserModalForm";
 import { UsersList } from "../components/UsersList";
+import { UserContext } from "../context/UserContext";
 
-export const UsersPage = ({
-    users,
-    userSelected,
-    initialUserForm,
-    visibleForm,
-    handlerAddUser,
-    handlerUserSelectedForm,
-    handlerRemoveUser,
-    handlerOpenForm,
-    handlerCloseForm,
-}) => {
+export const UsersPage = () => {
+
+    const {
+        users,
+        visibleForm,
+        handlerOpenForm,
+    } = useContext(UserContext);
 
     return (
         <>
-            {/* Para generar una ventan emergeten, tipo sweetalert*/}
-            {!visibleForm ||
-                <UserModalForm
-                    userSelected={userSelected}
-                    initialUserForm={initialUserForm}
-                    handlerAddUser={handlerAddUser}
-                    handlerCloseForm={handlerCloseForm} />
-            }
-
+            {!visibleForm || <UserModalForm />}
             <div className="container my-4">
                 <h2>Users App</h2>
                 <div className="row">
@@ -34,12 +24,11 @@ export const UsersPage = ({
                             Nuevo Usuario
                         </button>}
 
-                        {users.length === 0
-                            ? <div className="alert alert-warning">No hay usuarios en el sistema!</div>
-                            : <UsersList
-                                handlerUserSelectedForm={handlerUserSelectedForm}
-                                handlerRemoveUser={handlerRemoveUser}
-                                users={users} />}
+                        {
+                            users.length === 0
+                                ? <div className="alert alert-warning">No hay usuarios en el sistema!</div>
+                                : <UsersList />
+                        }
                     </div>
                 </div>
             </div>

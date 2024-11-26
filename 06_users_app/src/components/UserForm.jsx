@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { UserContext } from "../context/UserContext";
 
-export const UserForm = ({ handlerAddUser, userSelected, initialUserForm, handlerCloseForm }) => {
+export const UserForm = ({ userSelected, handlerCloseForm }) => {
+
+    const { initialUserForm, handlerAddUser } = useContext(UserContext);
 
     const [userForm, setUserForm] = useState(initialUserForm);
 
@@ -22,6 +25,7 @@ export const UserForm = ({ handlerAddUser, userSelected, initialUserForm, handle
             [name]: value,
         })
     }
+
     const onSubmit = (event) => {
         event.preventDefault(userForm);
         if (!username || (!password && id === 0) || !email) {
@@ -41,7 +45,6 @@ export const UserForm = ({ handlerAddUser, userSelected, initialUserForm, handle
             return;
         }
         //console.log(userForm);
-
         handlerAddUser(userForm);
         setUserForm(initialUserForm);
     }
