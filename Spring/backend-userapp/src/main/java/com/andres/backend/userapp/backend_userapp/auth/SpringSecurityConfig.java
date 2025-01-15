@@ -24,26 +24,29 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    AuthenticationManager authenticationManager() throws Exception{
+    AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-    @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        return http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/users").permitAll()
-                .anyRequest().authenticated()
-                .and()
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable()) // Deshabilitar CSRF
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
+                        .requestMatchers("/users/**").hasRole("ADMIN")
+                        .anyRequest().authenticated())
                 .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
-                .addFilter(new JwtValidationFilter(authenticationConfiguration.getAuthenticationManager()))
-                .csrf(config -> config.disable())
-                .sessionManagement(managment -> managment.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .build();
+                .addFilter(new JwtValidationFilter(authenticationConfiguration.getAuthenticationManager()));
+
+        return http.build();
     }
 
 }

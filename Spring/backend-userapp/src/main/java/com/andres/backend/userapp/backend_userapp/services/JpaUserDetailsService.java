@@ -1,8 +1,8 @@
 package com.andres.backend.userapp.backend_userapp.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,14 +20,15 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
 
-    public JpaUserDetailsService(UserRepository userRepository){
+    public JpaUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<com.andres.backend.userapp.backend_userapp.models.entities.User> o = userRepository.findByUsername(username);
+        Optional<com.andres.backend.userapp.backend_userapp.models.entities.User> o = userRepository
+                .findByUsername(username);
 
         if (!o.isPresent()) {
             throw new UsernameNotFoundException(String.format("El Username %s no existe en el sistema", username));
@@ -35,8 +36,10 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         com.andres.backend.userapp.backend_userapp.models.entities.User user = o.orElseThrow();
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities = user.getRoles()
+                .stream()
+                .map(r -> new SimpleGrantedAuthority(r.getName()))
+                .collect(Collectors.toList());
 
         return new User(user.getUsername(),
                 user.getPassword(),

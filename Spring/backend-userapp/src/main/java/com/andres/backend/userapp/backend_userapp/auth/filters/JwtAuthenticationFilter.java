@@ -1,7 +1,11 @@
 package com.andres.backend.userapp.backend_userapp.auth.filters;
 
+import static com.andres.backend.userapp.backend_userapp.auth.TokenJwtConfig.HEADER_AUTHORIZATION;
+import static com.andres.backend.userapp.backend_userapp.auth.TokenJwtConfig.PREFIX_TOKEN;
+import static com.andres.backend.userapp.backend_userapp.auth.TokenJwtConfig.SECRET_KEY;
+
 import java.io.IOException;
-import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.andres.backend.userapp.backend_userapp.models.entities.User;
@@ -20,8 +25,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import static com.andres.backend.userapp.backend_userapp.auth.TokenJwtConfig.*;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -61,8 +64,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String username = ((org.springframework.security.core.userdetails.User) authResult.getPrincipal())
                 .getUsername();
+        Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
+        boolean isAdmin = roles.stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
 
-        String token = Jwts.builder().subject(username)
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("authorities", new ObjectMapper().writeValueAsString(roles));
+        claims.put("isAdmin", isAdmin);
+        claims.put("username", username);
+
+        String token = Jwts.builder()
+                .claims(claims)
+                .subject(username)
                 .signWith(SECRET_KEY)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 3600000))
